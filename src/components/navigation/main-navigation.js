@@ -6,8 +6,8 @@ function MainNavigation() {
         <div className="main-navigation">
             <div className="main-navigation-left">
                 <NavLink to='/' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Home</NavLink>
-                <NavLink to='/events' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Events</NavLink>
-                <NavLink to='/newsletter' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Newsletter</NavLink>
+                <NavLink to='/about' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>About</NavLink>
+                <NavLink to='/contact' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Contact</NavLink>
             </div>
             <div className="main-navigation-right">
                 <NavLink to='/login' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Login</NavLink>
