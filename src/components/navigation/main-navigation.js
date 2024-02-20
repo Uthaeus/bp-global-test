@@ -10,8 +10,8 @@ function MainNavigation() {
                 <NavLink to='/contact' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Contact</NavLink>
             </div>
             <div className="main-navigation-right">
-                <NavLink to='/login' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Login</NavLink>
-                <NavLink to='/register' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Register</NavLink>
+                <NavLink to='/auth/login' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Login</NavLink>
+                <NavLink to='/auth/register' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Register</NavLink>
             </div>
         </div>
     )

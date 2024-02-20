@@ -2,13 +2,13 @@ import { Outlet } from "react-router";
 
 import MainNavigation from "./navigation/main-navigation";
 
-function RootLayout() {
+function AuthLayout() {
     return (
-        <div className="root-layout">
+        <div className="auth-layout">
             <MainNavigation />
             <Outlet />
         </div>
     );
 }
 
-export default RootLayout;
+export default AuthLayout
