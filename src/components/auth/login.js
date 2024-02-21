@@ -6,19 +6,13 @@ import { UserContext } from "../../store/user-context";
 
 function Login() {
 
-    const { register, handleSubmit, reset } = useForm();
-    const { users, setCurrentUser } = useContext(UserContext);
+    const { register, handleSubmit } = useForm();
+    const {  } = useContext(UserContext);
     const navigate = useNavigate();
 
     const onSubmit = data => {
-        const user = users.find(user => user.email === data.email && user.password === data.password);
-        if (user) {
-            setCurrentUser(user);
-            navigate("/");
-        } else {
-            alert("Invalid email or password");
-            reset();
-        }
+        console.log('login user', data);
+        navigate("/");
     };
 
     return (

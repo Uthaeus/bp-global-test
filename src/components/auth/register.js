@@ -7,7 +7,7 @@ import { UserContext } from "../../store/user-context";
 function Register() {
 
     const { register, handleSubmit } = useForm();
-    const { addUser, setCurrentUser } = useContext(UserContext);
+    const {  } = useContext(UserContext);
     const navigate = useNavigate();
 
     const onSubmit = data => {
@@ -17,15 +17,6 @@ function Register() {
         }
         console.log('registering user', data);
 
-        const newUser = {
-            id: Date.now(),
-            role: "user",
-            ...data
-        };
-        console.log('adding new user', newUser);
-        
-        addUser(newUser);
-        setCurrentUser(newUser);
         navigate("/");
     };
 

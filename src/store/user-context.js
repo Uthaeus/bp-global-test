@@ -1,42 +1,48 @@
-import { createContext, useState } from "react";
-
-import { Users } from "./DUMMY_DATA";
+import { createContext, useState, useEffect, useContext } from "react";
+import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const UserContext = createContext({
-    user: null,
-    setCurrentUser: () => {},
-    logout: () => {},
-    users: Users,
-    addUser: () => {},
-    removeUser: () => {},
+    currentUser: null,
+    userLoggedIn: false,
+    loading: true
 });
 
+export const useUserContext = () => {
+    return useContext(UserContext);
+}
+
 const UserContextProvider = ({ children }) => {
+    const [currentUser, setCurrentUser] = useState(null);
+    const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    const [users, setUsers] = useState(Users);
-    const [user, setUser] = useState(null);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, initializeUser);
+        return unsubscribe;
+    }, []);
 
-    const setCurrentUser = (user) => {
-        setUser(user);
-    };
+    async function initializeUser(user) {
+        if (user) {
+            setCurrentUser({...user});
+            setUserLoggedIn(true);
+        } else {
+            setCurrentUser(null);
+            setUserLoggedIn(false);
+        }
 
-    const logout = () => {
-        setUser(null);
-    };
+        setLoading(false);
+    }
 
-    const addUser = (user) => {
-        setUsers([...users, user]);
-    };
-
-    const removeUser = (id) => {
-        setUsers(users.filter(user => user.id !== id));
-    };
-
-    const value = { users, addUser, removeUser, user, setCurrentUser, logout };
+    const value = { 
+        currentUser,
+        userLoggedIn,
+        loading
+     };
 
     return (
         <UserContext.Provider value={value}>
-            {children}
+            {!loading && children}
         </UserContext.Provider>
     );
 }
