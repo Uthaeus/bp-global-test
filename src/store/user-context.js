@@ -5,6 +5,7 @@ import { Users } from "./DUMMY_DATA";
 export const UserContext = createContext({
     user: null,
     setCurrentUser: () => {},
+    logout: () => {},
     users: Users,
     addUser: () => {},
     removeUser: () => {},
@@ -19,6 +20,10 @@ const UserContextProvider = ({ children }) => {
         setUser(user);
     };
 
+    const logout = () => {
+        setUser(null);
+    };
+
     const addUser = (user) => {
         setUsers([...users, user]);
     };
@@ -27,7 +32,7 @@ const UserContextProvider = ({ children }) => {
         setUsers(users.filter(user => user.id !== id));
     };
 
-    const value = { users, addUser, removeUser, user, setCurrentUser };
+    const value = { users, addUser, removeUser, user, setCurrentUser, logout };
 
     return (
         <UserContext.Provider value={value}>

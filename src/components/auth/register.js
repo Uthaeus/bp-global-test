@@ -22,6 +22,8 @@ function Register() {
             role: "user",
             ...data
         };
+        console.log('adding new user', newUser);
+        
         addUser(newUser);
         setCurrentUser(newUser);
         navigate("/");
