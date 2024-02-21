@@ -1,10 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useContext } from "react";
+
+import { UserContext } from "../../store/user-context";
 
 function Login() {
 
-    const { register, handleSubmit } = useForm();
-    const onSubmit = data => console.log(data);
+    const { register, handleSubmit, reset } = useForm();
+    const { users, setCurrentUser } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    const onSubmit = data => {
+        const user = users.find(user => user.email === data.email && user.password === data.password);
+        if (user) {
+            setCurrentUser(user);
+            navigate("/");
+        } else {
+            alert("Invalid email or password");
+            reset();
+        }
+    };
 
     return (
         <div>

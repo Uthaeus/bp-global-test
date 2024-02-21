@@ -1,15 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useContext } from "react";
+
+import { UserContext } from "../../store/user-context";
 
 function Register() {
 
     const { register, handleSubmit } = useForm();
+    const { addUser, setCurrentUser } = useContext(UserContext);
+    const navigate = useNavigate();
+
     const onSubmit = data => {
         if (data.password !== data.confirmPassword) {
             alert("Passwords do not match");
             return;
         }
-        console.log(data);
+        console.log('registering user', data);
+
+        const newUser = {
+            id: Date.now(),
+            role: "user",
+            ...data
+        };
+        addUser(newUser);
+        setCurrentUser(newUser);
+        navigate("/");
     };
 
     return (
