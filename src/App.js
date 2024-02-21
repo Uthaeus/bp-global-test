@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RootLayout from "./components/root-layout";
 import AuthLayout from "./components/auth-layout";
+import AccountLayout from "./components/account-layout";
+import AccountHome from "./components/account/account-home";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Home from "./pages/home";
@@ -40,7 +42,17 @@ const router = createBrowserRouter([
         element: <Register />,
       },
     ]
-  }
+  },
+  {
+    path: "/account",
+    element: <AccountLayout />,
+    children: [
+      {
+        index: true,
+        element: <AccountHome />,
+      },
+    ]
+  },
 ])
 function App() {
   return <RouterProvider router={router} />;
