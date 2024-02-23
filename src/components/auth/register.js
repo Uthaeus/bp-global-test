@@ -2,8 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 
 function Register() {
 
@@ -19,6 +20,11 @@ function Register() {
         createUserWithEmailAndPassword(auth, data.email, data.password)
             .then((userCredential) => {
                 console.log(userCredential);
+                const user = userCredential.user;
+
+                setDoc(doc(db, "users", user.uid), {
+                    email: user.email
+                });
                 navigate('/');
             })
             .catch((error) => {
