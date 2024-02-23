@@ -1,17 +1,17 @@
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { UserContext } from "../store/user-context";
 
 export default function Home() {
-    const { user } = useContext(UserContext);
+    const { currentUser: user, userLoggedIn, loading  } = useContext(UserContext);
 
     return (
         <div className="home">
             <h1>Home</h1>
 
-            <p>Current user: {user?.name}</p>
-            <p>User role: {user?.role}</p>
+            <p>Current user: {loading ? 'Loading...' : user ? user.email : 'Not logged in'}</p>
+            <p>User role: {loading ? 'Loading...' : user ? user.role : 'Not logged in'}</p>
         </div>
     );
 }

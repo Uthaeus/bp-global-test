@@ -1,18 +1,28 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
 
-import { UserContext } from "../../store/user-context";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+import { auth } from "../../firebase";
 
 function Login() {
 
     const { register, handleSubmit } = useForm();
-    const {  } = useContext(UserContext);
     const navigate = useNavigate();
 
     const onSubmit = data => {
         console.log('login user', data);
-        navigate("/");
+        
+        signInWithEmailAndPassword(auth, data.email, data.password)
+            .then((userCredential) => {
+                console.log(userCredential);
+                navigate('/');
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+            });
     };
 
     return (
