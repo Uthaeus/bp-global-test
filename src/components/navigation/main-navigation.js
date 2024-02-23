@@ -1,10 +1,26 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
+
 import { UserContext } from "../../store/user-context";
+
+import { signOut } from "firebase/auth";
+
+import { auth } from "../../firebase";
 
 function MainNavigation() {
 
-    const { user, logout } = useContext(UserContext);
+    const navigate = useNavigate();
+    const { currentUser: user } = useContext(UserContext);
+
+    const logout = () => {
+        signOut(auth)
+            .then(() => {
+                navigate('/');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     return (
         <div className="main-navigation">
