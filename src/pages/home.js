@@ -11,7 +11,7 @@ export default function Home() {
             <h1>Home</h1>
 
             <p>Current user: {loading ? 'Loading...' : user ? user.email : 'Not logged in'}</p>
-            <p>User role: {loading ? 'Loading...' : user ? user.role : 'Not logged in'}</p>
+            <p>User role: {loading ? 'Loading...' : user ? user.role || 'User' : 'Not logged in'}</p>
         </div>
     );
 }

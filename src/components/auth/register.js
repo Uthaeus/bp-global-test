@@ -19,7 +19,7 @@ function Register() {
         createUserWithEmailAndPassword(auth, data.email, data.password)
             .then((userCredential) => {
                 console.log(userCredential);
-                navigate('/auth/login');
+                navigate('/');
             })
             .catch((error) => {
                 const errorCode = error.code;
