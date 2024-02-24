@@ -1,7 +1,8 @@
 import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
-import { updateProfile } from "firebase/auth";
+import { updateProfile, updatePassword } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 
 import { db } from "../../firebase";
@@ -11,6 +12,8 @@ import { UserContext } from "../../store/user-context";
 function AccountEdit() {
     const { currentUser: user } = useContext(UserContext);
 
+    const navigate = useNavigate();
+    
     const { register, handleSubmit, reset } = useForm();
 
     useEffect(() => {
@@ -18,12 +21,46 @@ function AccountEdit() {
             email: user.email,
             displayName: user.displayName || '',
             phoneNumber: user.phoneNumber || '',
+            street: user.billingAddress?.street || '',
+            city: user.billingAddress?.city || '',
+            state: user.billingAddress?.state || '',
+            zip: user.billingAddress?.zip || '',
 
         });
     }, [user]);
 
     const onSubmit = data => {
         console.log('data', data);
+
+        if (data.password !== data.confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        let enteredDisplayName =  data.displayName === '' ? null : data.displayName;
+        let enteredPhoneNumber =  data.phoneNumber === '' ? null : data.phoneNumber;
+
+        let userRef = doc(db, 'users', user.uid);
+
+        updateProfile(user, {
+            email: data.email,
+            displayName: enteredDisplayName,
+            phoneNumber: enteredPhoneNumber
+        }).then(() => {
+            updateDoc(userRef, {
+                email: data.email,
+                displayName: enteredDisplayName,
+                phoneNumber: enteredPhoneNumber
+            });
+            if (data.password !== '') {
+                updatePassword(user, data.password).then(() => {
+                    console.log('password updated');
+                });
+            }
+            navigate('/account');
+        }).catch((error) => {
+            console.log(error);
+        });
     };
 
     console.log('user', user);
@@ -56,7 +93,7 @@ function AccountEdit() {
 
                 <div className="form-group">
                     <p>Billing Address</p>
-                    
+
                     <label htmlFor="street">Street</label>
                     <input type="text" id="street" className="form-control" {...register("street")} />
 
