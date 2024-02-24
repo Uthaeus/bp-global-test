@@ -5,12 +5,13 @@ import { useNavigate } from "react-router";
 import { updateProfile, updatePassword } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 
 import { UserContext } from "../../store/user-context";
 
 function AccountEdit() {
     const { currentUser: user } = useContext(UserContext);
+    const authUser = auth.currentUser;
 
     const navigate = useNavigate();
     
@@ -42,7 +43,7 @@ function AccountEdit() {
 
         let userRef = doc(db, 'users', user.uid);
 
-        updateProfile(user, {
+        updateProfile(authUser, {
             email: data.email,
             displayName: enteredDisplayName,
             phoneNumber: enteredPhoneNumber
@@ -53,7 +54,7 @@ function AccountEdit() {
                 phoneNumber: enteredPhoneNumber
             });
             if (data.password !== '') {
-                updatePassword(user, data.password).then(() => {
+                updatePassword(authUser, data.password).then(() => {
                     console.log('password updated');
                 });
             }
