@@ -10,7 +10,7 @@ function AccountLayout() {
             <MainNavigation />
 
             <div className="account-layout-main">
-                <AccountSidebar user={user} />
+                <AccountSidebar />
                 <Outlet />
             </div>
         </div>
