@@ -23,7 +23,8 @@ function Register() {
                 const user = userCredential.user;
 
                 setDoc(doc(db, "users", user.uid), {
-                    email: user.email
+                    email: user.email,
+                    role: "user",
                 });
                 navigate('/');
             })

@@ -26,7 +26,7 @@ function AccountEdit() {
             city: user.billingAddress?.city || '',
             state: user.billingAddress?.state || '',
             zip: user.billingAddress?.zip || '',
-
+            role: user.role || '',
         });
     }, [user]);
 
@@ -83,6 +83,14 @@ function AccountEdit() {
                 </div>
 
                 <div className="form-group">
+                    <label htmlFor="role">Role</label>
+                    <select id="role" className="form-control" {...register("role")}>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <div className="form-group">
                     <label htmlFor="displayName">Display Name</label>
                     <input type="text" id="displayName" className="form-control" {...register("displayName")} />
                 </div>
@@ -92,7 +100,7 @@ function AccountEdit() {
                     <input type="text" id="phoneNumber" className="form-control" {...register("phoneNumber")} />
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <p>Billing Address</p>
 
                     <label htmlFor="street">Street</label>
@@ -109,7 +117,7 @@ function AccountEdit() {
 
                     <label htmlFor="country">Country</label>
                     <input type="text" id="country" className="form-control" {...register("country")} />
-                </div>
+                </div> */}
 
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
