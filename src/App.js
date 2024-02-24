@@ -3,8 +3,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./components/root-layout";
 import AuthLayout from "./components/auth-layout";
 import AccountLayout from "./components/account-layout";
+import AdminLayout from "./components/admin-layout";
 import AccountHome from "./components/account/account-home";
 import AccountEdit from "./components/account/account-edit";
+import AdminHome from "./components/admin/admin-home";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Home from "./pages/home";
@@ -55,6 +57,16 @@ const router = createBrowserRouter([
       {
         path: "/account/edit",
         element: <AccountEdit />,
+      },
+    ]
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        index: true,
+        element: <AdminHome />,
       },
     ]
   },

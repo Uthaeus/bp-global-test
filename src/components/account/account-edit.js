@@ -51,7 +51,8 @@ function AccountEdit() {
             updateDoc(userRef, {
                 email: data.email,
                 displayName: enteredDisplayName,
-                phoneNumber: enteredPhoneNumber
+                phoneNumber: enteredPhoneNumber,
+                role: data.role
             });
             if (data.password !== '') {
                 updatePassword(authUser, data.password).then(() => {
@@ -65,12 +66,6 @@ function AccountEdit() {
     };
 
     console.log('user', user);
-
-    // photo url - photoURL
-    // displayName
-    // email
-    // phone number - phoneNumber
-
 
     return (
         <div>

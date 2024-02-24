@@ -31,6 +31,7 @@ function MainNavigation() {
             </div>
             <div className="main-navigation-right">
                 {user ? <>
+                        {user.role === 'admin' && <NavLink to='/admin' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>Admin</NavLink>}
                         <NavLink to='/account' className={({ isActive }) => isActive ? 'main-nav-link active' : 'main-nav-link'}>My Account</NavLink>
                         <Link to='/' className="main-nav-link" onClick={logout}>Logout</Link>
                     </> : <>
