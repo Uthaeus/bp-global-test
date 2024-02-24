@@ -12,6 +12,7 @@ function AccountSidebar() {
         <div className="account-sidebar">
             <h2>Hello {user.email}</h2>
             <NavLink to='/account' className={({ isActive }) => isActive ? 'account-sidebar-link sidebar-link-active' : 'account-sidebar-link'}>Account Home</NavLink>
+            <NavLink to='/account/edit' className={({ isActive }) => isActive ? 'account-sidebar-link account-sidebar-link-active' : 'account-sidebar-link'}>Edit</NavLink>
             <NavLink to='/account/orders' className={({ isActive }) => isActive ? 'account-sidebar-link account-sidebar-link-active' : 'account-sidebar-link'}>Orders</NavLink>
             <NavLink to='/account/profile' className={({ isActive }) => isActive ? 'account-sidebar-link account-sidebar-link-active' : 'account-sidebar-link'}>Profile</NavLink>
             <Link to='/' className="account-sidebar-link" onClick={() => signOut(auth)}>Logout</Link>

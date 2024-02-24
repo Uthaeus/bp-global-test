@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
 
 import { db } from "../../firebase";
 
@@ -13,12 +13,16 @@ function AccountEdit() {
     const { register, handleSubmit, reset } = useForm();
 
     useEffect(() => {
-        reset(user);
+        reset({
+            email: user.email
+        });
     }, [user]);
 
     const onSubmit = data => {
-        console.log(data);
+        console.log('data', data);
     };
+
+    console.log('user', user);
 
     return (
         <div>
