@@ -26,12 +26,11 @@ function AccountEdit() {
             city: user.billingAddress?.city || '',
             state: user.billingAddress?.state || '',
             zip: user.billingAddress?.zip || '',
-            role: user.role || '',
+            role: user.role,
         });
     }, [user]);
 
     const onSubmit = data => {
-        console.log('data', data);
 
         if (data.password !== data.confirmPassword) {
             alert('Passwords do not match');
@@ -65,7 +64,6 @@ function AccountEdit() {
         });
     };
 
-    console.log('user', user);
 
     return (
         <div>

@@ -10,18 +10,18 @@ function AdminUsers() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const usersCollection = collection(db, 'users');
-        usersCollection.get().then((querySnapshot) => {
-            const usersData = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-        });
+    // useEffect(() => {
+    //     const usersCollection = collection(db, 'users');
+    //     usersCollection.get().then((querySnapshot) => {
+    //         const usersData = querySnapshot.docs.map((doc) => ({
+    //             id: doc.id,
+    //             ...doc.data()
+    //         }));
+    //     });
 
-        setUsers(usersData);
-        setLoading(false);
-    }, []);
+    //     setUsers(usersData);
+    //     setLoading(false);
+    // }, []);
 
     if (loading) {
         return <div>Loading...</div>;
