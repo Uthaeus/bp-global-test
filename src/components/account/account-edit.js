@@ -1,17 +1,18 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
 import { updateProfile, updatePassword } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-import { db, auth } from "../../firebase";
-
-import { UserContext } from "../../store/user-context";
+import { db, auth, storage } from "../../firebase";
 
 function AccountEdit() {
-    const { currentUser: user } = useContext(UserContext);
+    // const { currentUser: user } = useContext(UserContext);
     const authUser = auth.currentUser;
+
+    const user = doc(db, 'users', authUser.uid);
 
     const navigate = useNavigate();
     
@@ -27,8 +28,18 @@ function AccountEdit() {
             state: user.billingAddress?.state || '',
             zip: user.billingAddress?.zip || '',
             role: user.role,
+            photoURL: user.photoURL || 'https://via.placeholder.com/150'
         });
     }, [user]);
+
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0];
+        const storageRef = ref(storage, `images/${file.name}`);
+        await uploadBytes(storageRef, file);
+        getDownloadURL(storageRef).then((url) => {
+            reset({ photoURL: url });
+        });
+    };
 
     const onSubmit = data => {
 
@@ -51,7 +62,8 @@ function AccountEdit() {
                 email: data.email,
                 displayName: enteredDisplayName,
                 phoneNumber: enteredPhoneNumber,
-                role: data.role
+                role: data.role,
+                photoURL: data.photoURL
             });
             if (data.password !== '') {
                 updatePassword(authUser, data.password).then(() => {
@@ -122,9 +134,17 @@ function AccountEdit() {
                     <input type="password" id="confirmPassword" className="form-control" {...register("confirmPassword")} />
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="photoURL">Add an image</label>
-                    <input type='file' id="photoURL" className="form-control" {...register("photoURL")} />
+                <div className="row">
+                    <div className="col-md-6">
+                        <img src={image} alt="user" />
+                    </div>
+
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <label htmlFor="photoURL">Add an image</label>
+                            <input type='file' id="photoURL" className="form-control" {...register("photoURL")} onChange={handleImageChange} />
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" className="btn btn-primary">Update</button>
