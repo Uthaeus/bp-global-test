@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
 import { updateProfile, updatePassword } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, onSnapshot } from "firebase/firestore";
 
 import { db, auth } from "../../firebase";
+
+import { UserContext } from "../../store/user-context";
 
 function AccountEdit() {
     const [user, setUser] = useState({});
@@ -47,7 +49,7 @@ function AccountEdit() {
         let enteredDisplayName =  data.displayName === '' ? null : data.displayName;
         let enteredPhoneNumber =  data.phoneNumber === '' ? null : data.phoneNumber;
 
-        let userRef = doc(db, 'users', user.uid);
+        let userRef = doc(db, 'users', currentUser.uid);
 
         updateProfile(authUser, {
             email: data.email,
@@ -58,8 +60,7 @@ function AccountEdit() {
                 email: data.email,
                 displayName: enteredDisplayName,
                 phoneNumber: enteredPhoneNumber,
-                role: data.role,
-                photoURL: data.photoURL
+                role: data.role
             });
             if (data.password !== '') {
                 updatePassword(authUser, data.password).then(() => {
