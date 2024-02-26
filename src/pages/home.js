@@ -1,10 +1,10 @@
 
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import { UserContext } from "../store/user-context";
 
 export default function Home() {
-    const { currentUser: user, userLoggedIn, loading  } = useContext(UserContext);
+    const { currentUser: user, loading  } = useContext(UserContext);
 
     return (
         <div className="home">
