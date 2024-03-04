@@ -31,6 +31,7 @@ function AdminSidebar() {
             <NavLink to="/admin" className={({ isActive }) => isActive ? 'admin-sidebar-link admin-sidebar-link-active' : 'admin-sidebar-link'}>Home</NavLink>
             <NavLink to="/admin/users" className={({ isActive }) => isActive ? 'admin-sidebar-link admin-sidebar-link-active' : 'admin-sidebar-link'}>Users</NavLink>
             <NavLink to="/admin/orders" className={({ isActive }) => isActive ? 'admin-sidebar-link admin-sidebar-link-active' : 'admin-sidebar-link'}>Orders</NavLink>
+            <NavLink to="/admin/new-order" className={({ isActive }) => isActive ? 'admin-sidebar-link admin-sidebar-link-active' : 'admin-sidebar-link'}>New Order</NavLink>
 
             <button className="admin-sidebar-logout-btn" onClick={logout}>Logout</button>
         </div>

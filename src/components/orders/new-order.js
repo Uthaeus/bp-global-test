@@ -1,15 +1,29 @@
 import { useForm } from "react-hook-form";
-
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 
 
-function NewOrder({ users }) {
+function NewOrder() {
 
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
+
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        async function getUsers() {
+            const usersRef = collection(db, 'users');
+            const querySnapshot = await getDocs(usersRef);
+            const users = querySnapshot.docs.map(doc => {
+                return { ...doc.data(), id: doc.id };
+            });
+            setUsers(users);
+        }
+        getUsers();
+    }, []);
 
     const onSubmit = data => {
         console.log('new order', data);
@@ -33,7 +47,7 @@ function NewOrder({ users }) {
                             </select>
                         </div>
                     </div>
-                    
+
                     <div className="col-md-6">
                         
                     </div>

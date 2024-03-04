@@ -8,6 +8,7 @@ import AccountHome from "./components/account/account-home";
 import AccountEdit from "./components/account/account-edit";
 import AdminHome from "./components/admin/admin-home";
 import AdminUsers from "./components/admin/admin-users";
+import NewOrder from "./components/orders/new-order";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Home from "./pages/home";
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
         path: "/admin/users",
         element: <AdminUsers />,
       },
+      {
+        path: "/admin/new-order",
+        element: <NewOrder />,
+      }
     ]
   },
 ])

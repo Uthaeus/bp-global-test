@@ -6,7 +6,6 @@ import { UserContext } from "../../store/user-context";
 
 function AdminHome() {
     const [orders, setOrders] = useState([]);
-    const [users, setUsers] = useState([]);
 
     useEffect(() => {
         async function getOrders() {
@@ -18,19 +17,11 @@ function AdminHome() {
         getOrders();
     }, []);
 
-    useEffect(() => {
-        async function getUsers() {
-            const usersRef = collection(db, 'users');
-            const querySnapshot = await getDocs(usersRef);
-            const users = querySnapshot.docs.map(doc => doc.data());
-            setUsers(users);
-        }
-        getUsers();
-    }, []);
-    
     return (
-        <div>
-            <h1>Admin Home</h1>
+        <div className="admin-home">
+            <div className="admin-home-header">
+                <h1>Admin Home</h1>
+            </div>
 
             {/* chart of current orders */}
         </div>
