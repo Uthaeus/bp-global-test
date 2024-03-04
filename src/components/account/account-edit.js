@@ -58,7 +58,7 @@ function AccountEdit() {
         }).then(() => {
             updateDoc(userRef, {
                 email: data.email,
-                displayName: enteredDisplayName,
+                username: enteredDisplayName,
                 phoneNumber: enteredPhoneNumber,
                 role: data.role
             });

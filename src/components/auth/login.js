@@ -14,8 +14,7 @@ function Login() {
         console.log('login user', data);
         
         signInWithEmailAndPassword(auth, data.email, data.password)
-            .then((userCredential) => {
-                console.log(userCredential);
+            .then(() => {
                 navigate('/');
             })
             .catch((error) => {
