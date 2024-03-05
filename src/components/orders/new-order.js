@@ -1,32 +1,51 @@
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
 
-import { addDoc, collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
+import { addDoc, collection, runTransaction } from "firebase/firestore";
 
+import { db } from "../../firebase";
+import { UserContext } from "../../store/user-context";
 
 function NewOrder() {
-
+    const { users } = useContext(UserContext);
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
 
-    const [users, setUsers] = useState([]);
-
-    useEffect(() => {
-        async function getUsers() {
-            const usersRef = collection(db, 'users');
-            const querySnapshot = await getDocs(usersRef);
-            const users = querySnapshot.docs.map(doc => {
-                return { ...doc.data(), id: doc.id };
+    const onSubmit = async (data) => {
+        try {
+            const newOrder = {
+                customer_id: data.user,
+                po_number: data.poNumber,
+                order_number: data.orderNumber,
+                created_at: new Date().toISOString(),
+                ordered_date: data.orderedDate,
+                delivery_date: data.deliveryDate,
+                product: data.product,
+                quantity: data.quantity,
+                destination: data.destination,
+                carrier: data.carrier,
+                origin: data.origin,
+                order_status: data.orderStatus,
+                ship_date: data.shipDate,
+                last_location: data.lastLocation
+            };
+    
+            const orderRef = await addDoc(collection(db, "orders"), newOrder);
+            const newOrderId = orderRef.id;
+    
+            const userOrderRef = doc(db, `users/${data.user}/orders`, newOrderId);
+            
+            await runTransaction(db, async (transaction) => {
+                await transaction.set(userOrderRef, newOrder);
             });
-            setUsers(users);
+    
+            navigate('/admin');
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error(errorCode, errorMessage);
         }
-        getUsers();
-    }, []);
-
-    const onSubmit = data => {
-        console.log('new order', data);
     };
 
     return (
@@ -48,25 +67,25 @@ function NewOrder() {
                         </div>
 
                         <div className="form-group mb-3">
-                            <label htmlFor="po-number">PO Number</label>
-                            <input type="text" {...register("po-number")} className="form-control" />
+                            <label htmlFor="poNumber">PO Number</label>
+                            <input type="text" {...register("poNumber")} className="form-control" />
                         </div>
 
                         <div className="form-group mb-3">
-                            <label htmlFor="order-number">Order Number</label>
-                            <input type="text" {...register("order-number")} className="form-control" />
+                            <label htmlFor="orderNumber">Order Number</label>
+                            <input type="text" {...register("orderNumber")} className="form-control" />
                         </div>
                     </div>
 
                     <div className="col-md-6">
                         <div className="form-group mb-3">
-                            <label htmlFor="ordered-date">Ordered Date</label>
-                            <input type="date" {...register("ordered-date")} className="form-control" />
+                            <label htmlFor="orderedDate">Ordered Date</label>
+                            <input type="date" {...register("orderedDate")} className="form-control" />
                         </div>
 
                         <div className="form-group mb-3">
-                            <label htmlFor="delivery-date">Est. Delivery Date</label>
-                            <input type="date" {...register("delivery-date")} className="form-control" />
+                            <label htmlFor="deliveryDate">Est. Delivery Date</label>
+                            <input type="date" {...register("deliveryDate")} className="form-control" />
                         </div>
                     </div>
                 </div>
@@ -97,22 +116,26 @@ function NewOrder() {
                     <div className="col-md-6">
                         <div className="form-group mb-3">
                             <label htmlFor="quantity">Quantity</label>
-                            <input type="number" {...register("quantity")} className="form-control" />
+                            <input type="text" {...register("quantity")} className="form-control" />
                         </div>
 
                         <div className="form-group mb-3">
-                            <label htmlFor="order-status">Order Status</label>
-                            <input type="text" {...register("order-status")} className="form-control" />
+                            <label htmlFor="orderStatus">Order Status</label>
+                            <select {...register("orderStatus")} className="form-control">
+                                <option value="ordered">Ordered</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                            </select>
                         </div>
 
                         <div className="form-group mb-3">
-                            <label htmlFor="ship-date">Ship Date</label>
-                            <input type="date" {...register("ship-date")} className="form-control" />
+                            <label htmlFor="shipDate">Ship Date</label>
+                            <input type="date" {...register("shipDate")} className="form-control" />
                         </div>
 
                         <div className="form-group mb-3">
-                            <label htmlFor="last-location">Last Location</label>
-                            <input type="text" {...register("last-location")} className="form-control" />
+                            <label htmlFor="lastLocation">Last Location</label>
+                            <input type="text" {...register("lastLocation")} className="form-control" />
                         </div>
                     </div>
                 </div>
