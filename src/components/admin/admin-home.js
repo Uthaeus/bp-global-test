@@ -5,18 +5,13 @@ import { db } from "../../firebase";
 import { UserContext } from "../../store/user-context";
 
 function AdminHome() {
-    const [orders, setOrders] = useState([]);
+    const { orders } = useContext(UserContext);
+    const [currentOrders, setCurrentOrders] = useState([]);
 
     useEffect(() => {
-        async function getOrders() {
-            const ordersRef = collection(db, 'orders');
-            const querySnapshot = await getDocs(ordersRef);
-            const orders = querySnapshot.docs.map(doc => doc.data());
-            setOrders(orders);
-        }
-        getOrders();
-    }, []);
-
+        setCurrentOrders(orders);
+    }, [orders]);
+    
     return (
         <div className="admin-home">
             <div className="admin-home-header">

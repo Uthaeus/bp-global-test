@@ -1,44 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { collection, query, onSnapshot } from "firebase/firestore";
+import { UserContext } from "../../store/user-context";
 
-import { db } from "../../firebase";
 
 function AdminUsers() {
-
-    const [users, setUsers] = useState([]);
+    const { users } = useContext(UserContext);
     const [adminUsers, setAdminUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [commonUsers, setCommonUsers] = useState([]);
 
     useEffect(() => {
-        const usersRef = collection(db, 'users');
-        const q = query(usersRef);
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const u = [];
-            const a = [];
-            querySnapshot.forEach((doc) => {
-                if (doc.data().role === 'user') {
-                    u.push({ ...doc.data(), id: doc.id });
-                } else if (doc.data().role === 'admin') {
-                    a.push({ ...doc.data(), id: doc.id });
-                }
-            });
-            setUsers(u);
-            setAdminUsers(a);
-        });
-
-        setLoading(false);
-        return () => {
-            unsubscribe();
-        }
-    }, []);
-
-    
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+        setAdminUsers(users.filter(user => user.role === 'admin'));
+        setCommonUsers(users.filter(user => user.role !== 'admin'));
+    }, [users]);
 
     return (
         <div className="admin-users-container">
@@ -53,7 +27,7 @@ function AdminUsers() {
 
             <h1>Users</h1>
             <ul>
-                {users.map((user) => (
+                {commonUsers.map((user) => (
                     <li key={user.id}>
                         <Link to={`/admin/users/${user.id}`}>{user.email}</Link>
                     </li>
