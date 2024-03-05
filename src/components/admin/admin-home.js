@@ -1,7 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { collection, getDocs, doc } from "firebase/firestore";
 
-import { db } from "../../firebase";
 import { UserContext } from "../../store/user-context";
 
 function AdminHome() {
@@ -11,7 +9,7 @@ function AdminHome() {
     useEffect(() => {
         setCurrentOrders(orders);
     }, [orders]);
-    
+
     return (
         <div className="admin-home">
             <div className="admin-home-header">

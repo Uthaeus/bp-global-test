@@ -25,6 +25,7 @@ function Register() {
                 setDoc(doc(db, "users", user.uid), {
                     email: user.email,
                     role: "user",
+                    id: user.uid
                 });
                 navigate('/');
             })
