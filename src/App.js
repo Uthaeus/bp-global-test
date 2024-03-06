@@ -5,6 +5,7 @@ import AuthLayout from "./components/auth-layout";
 import AccountLayout from "./components/account-layout";
 import AdminLayout from "./components/admin-layout";
 import AccountHome from "./components/account/account-home";
+import AccountOrders from "./components/account/account-orders";
 import AccountEdit from "./components/account/account-edit";
 import AdminHome from "./components/admin/admin-home";
 import AdminUsers from "./components/admin/admin-users";
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <AccountHome />,
+      },
+      {
+        path: "/account/orders",
+        element: <AccountOrders />,
       },
       {
         path: "/account/edit",
