@@ -1,39 +1,38 @@
 import { useContext, useEffect, useState } from "react";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase";
 
 import { UserContext } from "../../store/user-context";
+import { OrdersContext } from "../../store/orders-context";
 
 function AccountHome() {
     const { currentUser: user } = useContext(UserContext);
+    const { orders } = useContext(OrdersContext);
     const [loading, setLoading] = useState(true);
-    const [userData, setUserData] = useState({});
+    const [currentOrders, setCurrentOrders] = useState([]);
 
     useEffect(() => {
-        const docRef = doc(db, 'users', user.uid);
-        const docSnap = onSnapshot(docRef, (doc) => {
-            if (doc.exists()) {
-                setUserData(doc.data());
-                setLoading(false);
-            }
-        });
+        setCurrentOrders(orders.filter(order => order.status !== 'delivered'));
+        setLoading(false);
+    }, [orders]);
 
-        return () => {
-            docSnap();
-        }
-    }, [ user ]);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div>
             <h1>Account: {user.email}</h1>
 
-            {userData.displayName && <p>Display Name: {userData.displayName}</p>}
+            {loading && <p>Loading...</p>}
 
-            <p>Role: {userData.role}</p>
+            {!loading && (
+                <div>
+                    <h2>Current Orders</h2>
+                    <ul>
+                        {currentOrders.map((order) => (
+                            <li key={order.id}>
+                                <Link to={`/account/orders/${order.id}`}>{order.id}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 }
