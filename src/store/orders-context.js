@@ -22,21 +22,29 @@ const OrdersContextProvider = ({ children }) => {
     const { currentUser } = useContext(UserContext);
 
     useEffect(() => {
-        if (currentUser.role !== 'admin') {
-            setLoading(false);
-            return;
-        }
-        const ordersRef = collection(db, 'orders');
-        const ordersSnap = getDocs(ordersRef);
-        ordersSnap.then((querySnapshot) => {
-            const orders = [];
-            querySnapshot.forEach((doc) => {
-                orders.push(doc.data());
-            });
-            setOrders(orders);
-            setLoading(false);
-        });
-    }, []);
+        const fetchOrders = async () => {
+          if (currentUser) {
+            const ordersRef = collection(db, 'orders');
+            try {
+              const ordersSnap = await getDocs(ordersRef);
+              const orders = ordersSnap.docs.map((doc) => doc.data());
+              
+              if (currentUser.role === 'admin') {
+                setOrders(orders);
+              } else {
+                const userOrders = orders.filter((order) => order.customer_id === currentUser.uid);
+                setOrders(userOrders);
+              }
+            } catch (error) {
+              console.error('Error fetching orders:', error);
+            } 
+          }
+
+          setLoading(false);
+        };
+      
+        fetchOrders();
+      }, [currentUser]);
 
     const value = {
         orders,
