@@ -1,6 +1,7 @@
 import { Outlet } from "react-router";
 
 import UsersContextProvider from "../store/users-context";
+import OrdersContextProvider from "../store/orders-context";
 
 import MainNavigation from "./navigation/main-navigation";
 import AdminSidebar from "./admin/admin-sidebar";
@@ -12,10 +13,12 @@ function AdminLayout() {
             <MainNavigation />
 
             <UsersContextProvider>
-                <div className="admin-layout-main">
-                    <AdminSidebar />
-                    <Outlet />
-                </div>
+                <OrdersContextProvider>
+                    <div className="admin-layout-main">
+                        <AdminSidebar />
+                        <Outlet />
+                    </div>
+                </OrdersContextProvider>
             </UsersContextProvider>
         </div>
     );

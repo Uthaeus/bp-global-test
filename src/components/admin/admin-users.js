@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { UserContext } from "../../store/user-context";
+import { UsersContext } from "../../store/users-context";
 
 
 function AdminUsers() {
-    const { users } = useContext(UserContext);
+    const { users } = useContext(UsersContext);
     const [adminUsers, setAdminUsers] = useState([]);
     const [commonUsers, setCommonUsers] = useState([]);
 
