@@ -11,30 +11,32 @@ function Register() {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
 
-    const onSubmit = data => {
+    const onSubmit = async (data) => {
         if (data.password !== data.confirmPassword) {
-            alert("Passwords do not match");
-            return;
+          alert("Passwords do not match");
+          return;
         }
-        
-        createUserWithEmailAndPassword(auth, data.email, data.password)
-            .then((userCredential) => {
-                console.log(userCredential);
-                const user = userCredential.user;
-
-                setDoc(doc(db, "users", user.uid), {
-                    email: user.email,
-                    role: "user",
-                    id: user.uid
-                });
-                navigate('/');
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-            });
-    };
+      
+        try {
+          // Input validation for password strength/format can be added here
+      
+          const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+          const user = userCredential.user;
+          const userRef = doc(db, "users", user.uid);
+      
+          // Set user data in Firestore
+          await setDoc(userRef, {
+            email: user.email,
+            role: "user"
+          });
+          navigate('/');
+        } catch (error) {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error("Error creating user:", errorCode, errorMessage);
+          // Display an error message to the user (e.g., using a toast or alert)
+        }
+      };
 
     return (
         <div>

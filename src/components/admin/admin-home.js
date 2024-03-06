@@ -21,13 +21,18 @@ function AdminHome() {
             
             <div className="admin-home-orders">
                 <h2>Current Orders</h2>
-                <ul>
-                    {currentOrders.map((order) => (
-                        <li key={order.id}>
-                            <Link to={`/admin/orders/${order.id}`}>{order.id}</Link>
-                        </li>
-                    ))}
-                </ul>
+
+                {loading && <p>Loading...</p>}
+
+                {!loading && (
+                    <ul>
+                        {currentOrders.map((order) => (
+                            <li key={order.id}>
+                                <Link to={`/admin/orders/${order.id}`}>{order.id}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </div>
     );
