@@ -1,14 +1,13 @@
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
+
 import { useNavigate } from "react-router";
 
 import { addDoc, collection, runTransaction } from "firebase/firestore";
 
 import { db } from "../../firebase";
-import { UserContext } from "../../store/user-context";
 
 function NewOrder() {
-    const { users } = useContext(UserContext);
+    
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
 

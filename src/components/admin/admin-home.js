@@ -1,14 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
-import { UserContext } from "../../store/user-context";
+
 
 function AdminHome() {
-    const { orders } = useContext(UserContext);
-    const [currentOrders, setCurrentOrders] = useState([]);
-
-    useEffect(() => {
-        setCurrentOrders(orders);
-    }, [orders]);
+    
 
     return (
         <div className="admin-home">
